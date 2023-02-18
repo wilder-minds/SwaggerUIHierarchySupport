@@ -37,7 +37,7 @@ app.MapGet("/weatherforecast", () =>
   return forecast;
 })
 .WithName("GetWeatherForecast")
-.WithTags("Weather:Forcast")
+.WithTags("Weather:Forecast")
 .WithOpenApi();
 
 app.MapGet("/weatherdays", () =>
