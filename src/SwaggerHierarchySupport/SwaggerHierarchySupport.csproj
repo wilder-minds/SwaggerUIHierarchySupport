@@ -12,10 +12,23 @@
     <Company>Wilder Minds LLC</Company>
     <Description>Simple extension to allow you to install the Plugin for SwaggerUI to allow for hierarchies based on tags.</Description>
     <Copyright>2023, Wilder Minds LLC</Copyright>
-    <PackageProjectUrl>https://github.com/wilder-minds/swaggerhierarchysupport</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/wilder-minds/swaggerhierarchysupport</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/wilder-minds/SwaggerUIHierarchySupport</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/wilder-minds/SwaggerUIHierarchySupport</RepositoryUrl>
     <AssemblyName>SwaggerUIHierarchySupport</AssemblyName>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseFile>license</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\license">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />

@@ -14,10 +14,12 @@ namespace SwaggerHierarchySupport
     /// Adds the SwaggerUI Plugin that supports hierarchical tags
     /// </summary>
     /// <param name="opt">The options object.</param>
-    public static void AddHierarchySupport(this SwaggerUIOptions opt)
+    public static void AddHierarchySupport(this SwaggerUIOptions opt, string? uri = null)
     {
+      if (uri is null) uri = "https://unpkg.com/swagger-ui-plugin-hierarchical-tags";
+
       // Adds the plugin onto the page
-      opt.InjectJavascript("https://unpkg.com/swagger-ui-plugin-hierarchical-tags");
+      opt.InjectJavascript(uri);
       
       // Retrieves original function that is executed to create the index.html
       var oldIndexStream = opt.IndexStream;
