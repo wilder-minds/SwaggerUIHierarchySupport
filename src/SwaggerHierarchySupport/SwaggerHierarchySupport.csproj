@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>WilderMinds.$(AssemblyName)</PackageId>
     <Title>WilderMinds.$(AssemblyName)</Title>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>shawnwildermuth</Authors>
     <Company>Wilder Minds LLC</Company>
     <Description>Simple extension to allow you to install the Plugin for SwaggerUI to allow for hierarchies based on tags.</Description>
@@ -17,6 +17,8 @@
     <AssemblyName>SwaggerUIHierarchySupport</AssemblyName>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseFile>license</PackageLicenseFile>
+    <FileVersion>1.0.1</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
