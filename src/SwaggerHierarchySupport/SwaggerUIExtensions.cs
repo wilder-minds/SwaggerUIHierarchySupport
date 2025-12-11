@@ -1,62 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace SwaggerHierarchySupport
+namespace SwaggerHierarchySupport;
+
+public static class SwaggerUIExtensions
 {
-  public static class SwaggerUIExtensions
-  {
-    /// <summary>
-    /// Adds the SwaggerUI Plugin that supports hierarchical tags
-    /// </summary>
-    /// <param name="opt">The options object.</param>
     public static void AddHierarchySupport(this SwaggerUIOptions opt, string? uri = null)
     {
-      if (uri is null) uri = "https://unpkg.com/swagger-ui-plugin-hierarchical-tags";
+        if (uri is null) uri = "https://unpkg.com/swagger-ui-plugin-hierarchical-tags";
 
-      // Adds the plugin onto the page
-      opt.InjectJavascript(uri);
-      
-      // Retrieves original function that is executed to create the index.html
-      var oldIndexStream = opt.IndexStream;
+        opt.HeadContent += $@"
+                <script src='{uri}'></script>
+                <script>
+                (function() {{
+                    let initialized = false;
+    
+                    function tryInitialize() {{
+                        if (initialized) return;
 
-      // Replace the creation of the HTML with our own function
-      opt.IndexStream = () =>
-      {
-        // Execute the old stream to get the original index.html
-        var stream = oldIndexStream();
-        stream.Position = 0;
-        var rdr = new StreamReader(stream);
-        var html = rdr.ReadToEnd();
+                        if (window.ui && window.ui.getConfigs && typeof HierarchicalTagsPlugin !== 'undefined') {{
+                            initialized = true;
 
-        // Now that we have the entire HTML, inject our plugin
-        // Tried to do this via the Additional options, but JSON (which is parsed)
-        // a literal value for the plugin
-        html = html.Replace("const ui = SwaggerUIBundle(configObject);", @"
-        if ('plugins' in configObject) configObject.plugins.push(HierarchicalTagsPlugin);
-        else configObject.plugins = [ HierarchicalTagsPlugin ];
-        const ui = SwaggerUIBundle(configObject);");
-        
-        // Create a new stream to contain the new HTML file
-        var newStream = new MemoryStream();
-        var writer = new StreamWriter(newStream, Encoding.UTF8);
-        foreach (var line in html.Split("\n"))
-        {
-          writer.Write($"{line}\n");
-          writer.Flush();
-        }
-
-        // Reset the stream to the starting position
-        newStream.Position = 0;
-
-        // Return the stream when requested.
-        return newStream;
-      };
-
+                            const newUi = SwaggerUIBundle({{
+                                ...window.ui.getConfigs(),
+                                dom_id: '#swagger-ui',
+                                plugins: [
+                                    SwaggerUIBundle.plugins.DownloadUrl,
+                                    HierarchicalTagsPlugin
+                                    ]
+                                }});
+                                window.ui = newUi;
+                            }}
+                        }}
+    
+                        tryInitialize();
+    
+                        const interval = setInterval(() => {{
+                            tryInitialize();
+                            if (initialized) clearInterval(interval);
+                        }}, 1);
+    
+                        function checkFrame() {{
+                            tryInitialize();
+                            if (!initialized) requestAnimationFrame(checkFrame);
+                        }}
+                        requestAnimationFrame(checkFrame);
+                    }})();
+                </script>";
     }
-  }
 }
